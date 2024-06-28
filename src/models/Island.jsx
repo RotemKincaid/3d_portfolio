@@ -42,14 +42,21 @@ const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props}) => {
     e.stopPropagation()
     e.preventDefault()
     if (isRotating) {
+    // If rotation is enabled, calculate the change in clientX position
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
 
-      let clientX = e.touches ? e.touches[0].clientX : e.clientX
+    // calculate the change in the horizontal position of the mouse cursor or touch input,
+    // relative to the viewport's width
+    const delta = (clientX - lastX.current) / viewport.width;
 
-      const delta = (clientX = lastX.current) / viewport.width
+    // Update the island's rotation based on the mouse/touch movement
+    islandRef.current.rotation.y += delta * 0.01 * Math.PI;
 
-      islandRef.current.rotation.y += delta * 0.01 * Math.PI
-      lastX.current = clientX
-      rotationSpeed.current = delta * 0.01 * Math.PI
+    // Update the reference for the last clientX position
+    lastX.current = clientX;
+
+    // Update the rotation speed
+    rotationSpeed.current = delta * 0.01 * Math.PI;
     }
   }
 
